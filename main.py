@@ -24,8 +24,11 @@ def read_root():
     return { "Hola" : "Pakito"}
 
 @app.get('/ingredientes', tags=['ingredientes'])
-async def get_ingredients():
-     return await FoodData().get_ingredients()
+async def get_ingredients(all : int , skip: int = 0, total: int = 10):
+    if all :
+        return await FoodData().get_allingredients()
+    else:
+        return await FoodData().get_ingredients(skip, total) 
 
 @app.get('/ingredientes/{ingrediente_id}', tags=['ingredientes'], status_code=status.HTTP_200_OK)
 async def get_ingredient(ingrediente_id : int, response : Response):

@@ -10,9 +10,12 @@ class FoodData:
         with data_file.open(encoding="utf-8") as load:
             self.alimentos = json.load(load)
 
-    async def get_ingredients(self):
-        return self.alimentos
+    async def get_ingredients(self, skip, total):
+        return {"Alimentos ": self.alimentos['alimentos'][skip: skip + total]}
 
+    async def get_allingredients(self):
+        return {"Alimentos " : self.alimentos['alimentos']}
+    
     async def get_ingredient(self, ingrediente_id: int):
         alimento = None
         for item in self.alimentos["alimentos"]:
