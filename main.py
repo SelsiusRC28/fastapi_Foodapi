@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi import Response, status
 from docs import tags_metadata
 from fooddata import FoodData
+from pydantic import BaseModel
 
 app = FastAPI(
     title= "FoodApi",
@@ -17,6 +18,10 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata
 )
+
+class Item(BaseModel):
+    name: str
+    description: str | None = None
 
 
 @app.get('/')
@@ -41,3 +46,9 @@ async def get_ingredient(ingrediente_id : int, response : Response):
         return {
             "error " : str(ingrediente_id) + " no encontrado"
         }
+
+router = APIRouter()
+@app.post('/ingredientes', tags=['ingredientes'])
+async def post_ingredients(item: Item):
+    return {"hola" : 'post'}
+app.include_router(router)
